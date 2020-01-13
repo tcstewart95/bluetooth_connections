@@ -20,6 +20,12 @@ class BluetoothStream {
     return await _channel
       .invokeListMethod('getCurrentConnections');
   }
+  
+  ///Checks if there is a recording in progress
+  static Future<bool> get isRecording async{
+    return await _channel
+      .invokeMethod('isRecording');
+  }
 
   ///Begins recording from the audio source.
   ///Returns true if successful, returns false if failed
@@ -33,7 +39,7 @@ class BluetoothStream {
   ///This does not start recording, it only lets you see and interact with
   ///data as a recording happens
   static EventChannel get getEventChannel {
-    return const EventChannel('com.yourcompany.eventchannelsample/stream');
+    return const EventChannel('streamBits');
   }
 
   ///Stops recording from the audio source.
@@ -41,12 +47,6 @@ class BluetoothStream {
   static Future<String> stopRecording() async {
     return await _channel
       .invokeMethod('stopRecording');
-  }
-
-  ///Checks if there is a recording in progress
-  static Future<bool> get isRecording async{
-    return await _channel
-      .invokeMethod('isRecording');
   }
 
   //PRIVATE FUNCTIONS://////////////////////////////////////////////////////////////////

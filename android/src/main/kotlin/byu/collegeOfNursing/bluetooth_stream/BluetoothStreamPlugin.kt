@@ -33,13 +33,40 @@ public class BluetoothStreamPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
-    } else {
-      result.notImplemented()
+    when (call.method) {
+      "checkPermission" -> checkPermission(result)
+      "getCurrentConnections" -> getCurrentConnections(result)
+      "isRecording" -> isRecording(result)
+      "startRecording" -> startRecording(call.argument("path"), call.argument("fileType"), result)
+      "streamBits" -> streamBits(result)
+      "stopRecording" -> stopRecording(result)
     }
   }
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+  }
+
+  fun checkPermission(@NonNull result: Result) {
+    result.success(/*return the result here*/)
+  }
+
+  fun getCurrentConnections(@NonNull result: Result) {
+    result.success(/*return the result here*/)
+  }
+  
+  fun isRecording (@NonNull result: Result) {
+    result.success(/*return the result here*/)
+  }
+
+  fun startRecording (@NoNull path: String, @NoNull fileType: String, @NonNull result: Result) {
+    result.success(/*return the result here*/)
+  }
+
+  fun streamBits (@NonNull result: Result) {
+    result.success(/*return the result here*/)
+  }
+
+  fun stopRecording (@NonNull result: Result) {
+    result.success(/*return the result here*/)
   }
 }
