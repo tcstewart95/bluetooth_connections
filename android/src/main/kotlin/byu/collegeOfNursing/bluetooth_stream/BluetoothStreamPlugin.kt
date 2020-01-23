@@ -1,5 +1,11 @@
 package byu.collegeOfNursing.bluetooth_stream
 
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothManager
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.annotation.NonNull;
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -7,6 +13,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
+
 
 /** BluetoothStreamPlugin */
 public class BluetoothStreamPlugin: FlutterPlugin, MethodCallHandler {
@@ -46,27 +53,51 @@ public class BluetoothStreamPlugin: FlutterPlugin, MethodCallHandler {
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
   }
 
-  fun checkPermission(@NonNull result: Result) {
-    result.success(/*return the result here*/)
+  //Start by requesting permission
+
+  private fun checkPermission(@NonNull result: Result) {
+
+    lateinit  var appContext: Context
+
+    val bluetoothAdapter: BluetoothAdapter? by lazy(LazyThreadSafetyMode.NONE) {
+      val bluetoothManager = appContext.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+      bluetoothManager.adapter
+    }
+
+    if(bluetoothAdapter == null) {
+      result.success(null)
+    } else if (!bluetoothAdapter!!.isEnabled){
+      result.success(false)
+    } else {
+      result.success(true)
+    }
   }
 
-  fun getCurrentConnections(@NonNull result: Result) {
-    result.success(/*return the result here*/)
+  private fun getCurrentConnections(@NonNull result: Result) {
+    val bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
+    val pairedDevices: Set<BluetoothDevice>? = bluetoothAdapter?.bondedDevices
+
+    if(pairedDevices!!.isNotEmpty()) {
+      result.success(pairedDevices)
+    }
+    else {
+      result.success(null)
+    }
   }
   
-  fun isRecording (@NonNull result: Result) {
+  private fun isRecording (@NonNull result: Result) {
+
+  }
+
+  private fun startRecording (@NoNull path: String, @NoNull fileType: String, @NonNull result: Result) {
     result.success(/*return the result here*/)
   }
 
-  fun startRecording (@NoNull path: String, @NoNull fileType: String, @NonNull result: Result) {
+  private fun streamBits (@NonNull result: Result) {
     result.success(/*return the result here*/)
   }
 
-  fun streamBits (@NonNull result: Result) {
-    result.success(/*return the result here*/)
-  }
-
-  fun stopRecording (@NonNull result: Result) {
+  private fun stopRecording (@NonNull result: Result) {
     result.success(/*return the result here*/)
   }
 }
